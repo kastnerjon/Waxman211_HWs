@@ -1,0 +1,65 @@
+#include <stdlib.h>
+#include <iostream>
+#include <string>
+#include <cmath>
+
+using namespace std;
+void nextGirl(int &dude, int q[]);
+bool test(int dude, int q[]);
+void BT(int &dude, int q[]);
+void print(int &dude, int q[]);
+
+void nextDude (int &dude, int q[]){
+  dude++;
+  if (dude==3) print(dude, q);
+  q[dude] = -1;
+  nextGirl(dude, q);
+}
+
+void nextGirl(int &dude, int q[]){
+  q[dude]++;
+  if (q[dude] == 3) BT(dude, q);
+  if (test(dude, q) == false) nextGirl(dude, q);
+  nextDude(dude, q);
+}
+
+bool test(int dude, int q[]){
+int mp[3][3]={{0,2,1}, {0,2,1}, {1,2,0}};
+int wp[3][3]={{2,1,0},{0,1,2}, {2,0,1}};
+
+for (int i=0; i < dude; i++)
+  if (q[i] == q[dude]) return false;
+
+for (int i=0; i < dude; i++){
+  if (mp[i][q[dude]] < mp[i][q[i]] && wp[q[dude]][i] < wp[q[dude]][dude]) return false;
+  }
+
+for (int i=0; i < dude; i++){
+  if (mp[dude][q[i]] < mp[dude][q[dude]] && wp[q[i]][dude] < wp[q[i]][i]) return false;
+}
+
+return true;
+}
+
+void BT(int &dude, int q[]){
+  dude--;
+  if (dude==-1)exit(0);
+  nextGirl(dude, q);
+}
+
+void print(int &dude, int q[]){
+int static counter = 0;
+counter++;
+
+cout << "\n Solution " << counter << ": " << endl;
+for (int i=0; i<3; i++){
+  cout << "Guy " << i << " & " << "Girl " << q[i] << "\n";
+}
+BT(dude, q);
+}
+
+int main (){
+  int q[3], dude = 0;
+  q[0] = 0;
+  nextDude(dude, q);
+}
